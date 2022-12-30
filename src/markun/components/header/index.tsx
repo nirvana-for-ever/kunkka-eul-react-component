@@ -605,7 +605,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="top"
           title="源代码"
         >
-          <div className={styles['header-icon']}>
+          <div className={styles['header-icon']} onClick={() => window.open('https://github.com/nirvana-for-ever/kunkka-eul-react-component')}>
             <SourceIcon />
           </div>
         </Tooltip>
