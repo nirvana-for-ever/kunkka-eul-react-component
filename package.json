@@ -1,6 +1,6 @@
 {
   "name": "@kunkka-eul/react-component",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "nirvana component",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
