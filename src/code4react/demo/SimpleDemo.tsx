@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Code4React from '../code4react';
+import { Code4React } from '@kunkka-eul/react-component';
 // require styles
 import 'codemirror/lib/codemirror.css';
 // 编程语言包，这里以 js 为例子
@@ -33,7 +33,7 @@ const Demo: React.FC = () => {
       <Code4React
         options={options}
         code={code}
-        onChange={(text) => {
+        onChange={(text: string) => {
           setCode(text);
         }}
       />

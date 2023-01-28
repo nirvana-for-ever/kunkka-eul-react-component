@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useImperativeHandle, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import Editor from './components/editor';
 import { EditorRef } from './components/editor/types';
@@ -12,10 +12,10 @@ import './global.less';
 import styles from './index.less';
 import { store as markunStore } from './store/markun';
 import { setScrollingOwner, store as scrollStore } from './store/scroll';
-import { MarkunProps } from './types';
+import { MarkunProps, MarkunRef } from './types';
 import { fullScreen } from './utils';
 
-const Markun: React.FC<MarkunProps> = props => {
+const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
   const [theme, setTheme] = useState(props.defaultTheme || 'darcula');
   const [highlight, setHighlight] = useState(
     props.defaultHighlight || 'oneDark'
@@ -26,10 +26,19 @@ const Markun: React.FC<MarkunProps> = props => {
   const editorRef = useRef<EditorRef>(null);
   const viewerRef = useRef<ViewerRef>(null);
 
+  useImperativeHandle(ref, () => {
+    return {
+      getHtml() {
+        return viewerRef.current?.root?.innerHTML || '';
+      }
+    };
+  }, [viewerRef.current]);
+
   return (
     <Provider store={markunStore}>
       <div
-        className={styles['markun']}
+        className={`${styles['markun']} ${props.className}`}
+        style={props.style}
         ref={rootRef}
       >
         <Header
@@ -55,8 +64,12 @@ const Markun: React.FC<MarkunProps> = props => {
         <div className={styles['main']}>
           <Editor
             ref={editorRef}
+            code={props.code}
             theme={theme}
-            onCodeChange={newCode => setCode(newCode)}
+            onCodeChange={newCode => {
+              setCode(newCode);
+              if (props.onCodeChange) props.onCodeChange(newCode);
+            }}
             onImgUpload={async(file) => {
               return await props.onImgUpload(file);
             }}
@@ -206,7 +219,7 @@ const Markun: React.FC<MarkunProps> = props => {
             }}
           />
           <Helper />
-          <Cate />
+          <Cate viewerRoot={viewerRef?.current?.root || undefined} />
         </div>
         <Footer
           scrollToTop={isSync => {
@@ -220,6 +233,6 @@ const Markun: React.FC<MarkunProps> = props => {
       </div>
     </Provider>
   );
-};
+});
 
 export default Markun;

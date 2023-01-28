@@ -40,8 +40,7 @@ const basicOptions = {
 };
 
 const Editor = React.forwardRef<EditorRef, EditorProps>(
-  ({ theme, onCodeChange, onImgUpload, onScroll }, ref) => {
-    const [code, setCode] = useState('');
+  ({ code, theme, onCodeChange, onImgUpload, onScroll }, ref) => {
     const [keyEvents, setKeyEvents] = useState<any>();
 
     const code4ReactRef = useRef<Code4ReactRef>(null);
@@ -221,7 +220,6 @@ const Editor = React.forwardRef<EditorRef, EditorProps>(
           code={code}
           options={options}
           onChange={newCode => {
-            setCode(newCode);
             onCodeChangeDebounce(newCode);
           }}
           onScrollRaw={onScroll}

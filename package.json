@@ -1,6 +1,6 @@
 {
   "name": "@kunkka-eul/react-component",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "nirvana component",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -16,6 +16,10 @@
     "lint:css": "stylelint \"{src,test}/**/*.{css,less}\"",
     "lint:es": "eslint \"{src,test}/**/*.{js,jsx,ts,tsx}\"",
     "prepublishOnly": "father doctor && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nirvana-for-ever/kunkka-eul-react-component"
   },
   "authors": [
     "nirvana"

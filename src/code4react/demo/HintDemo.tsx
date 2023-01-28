@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Code4React from '../code4react';
+import { Code4React } from '@kunkka-eul/react-component';
 import { ignoreToken, timeout } from '../utils';
 // require styles
 import 'codemirror/lib/codemirror.css';
@@ -34,7 +34,7 @@ const Demo: React.FC = () => {
       <Code4React
         options={options}
         code={code}
-        onChangeRaw={(cm, change) => {
+        onChangeRaw={(cm: any, change: any) => {
           setCode(cm.getValue());
           // 判断需不需要提示
           if (change.origin === '+input') {

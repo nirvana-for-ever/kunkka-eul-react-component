@@ -1,3 +1,5 @@
+@import './cate.less';
+
 .markun-drop-down {
   border: 1px solid rgba(0, 0, 0, .3);
   border-radius: 8px;
@@ -47,15 +49,4 @@
 
 :not(pre) > code[class*="language-"] {
   padding: 0;
-}
-
-each(range(1, 6, 1), {
-  .markun-topic-@{index} {
-    padding-left: 8px + (@value - 1) * 16px;
-  }
-});
-
-.markun-topic-active {
-  color: #0366d6 !important;
-  background-color: #f6f8fa !important;
 }

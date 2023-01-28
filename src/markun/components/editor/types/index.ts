@@ -1,4 +1,5 @@
 export interface EditorProps {
+  code: string;
   theme: string;
   onCodeChange: (code: string) => void;
   onImgUpload: (file: File) => Promise<string>;

@@ -10,5 +10,7 @@ export default defineConfig({
     ]
   },
   base: '/react/',
-  publicPath: '/react/'
+  publicPath: '/react/',
+  favicons: ['/react/favicon.ico'],
+  logo: '/react/logo.png'
 });

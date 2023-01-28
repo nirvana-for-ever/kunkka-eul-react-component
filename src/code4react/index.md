@@ -1,4 +1,4 @@
-# code4react
+# Code4React
 可供 `react` 使用的代码编辑器，可以自定义主题
 
 ## 简单应用
@@ -35,7 +35,7 @@ const basicOptions = {
 
 更多配置项参考 [codemirror5](https://codemirror.net/5/doc/manual.html#config)
 
-### ref
+### Ref
 通过绑定 `ref` 可以获取 `CodeMirror` 实例，进行更多自定义的操作
 ```ts
 export interface Code4ReactRef {

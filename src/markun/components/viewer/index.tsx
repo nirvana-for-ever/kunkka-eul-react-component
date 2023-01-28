@@ -63,10 +63,10 @@ const Viewer = React.forwardRef<ViewerRef, ViewerProps>((props, ref) => {
     ref,
     () => {
       return {
-        root: divRef?.current
+        root: divRef.current
       };
     },
-    []
+    [divRef.current]
   );
 
   const curMainVisible = useSelector((state: any) => {

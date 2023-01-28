@@ -1,0 +1,35 @@
+.cate-container {
+  ul {
+    padding: 0;
+  }
+
+  li {
+    height: 28px;
+    margin-bottom: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 28px;
+    color: #959da5;
+    cursor: pointer;
+  }
+
+  ul,
+  li {
+    list-style: none;
+  }
+
+  li:hover {
+    background-color: #f6f8fa;
+  }
+
+  each(range(1, 6, 1), {
+    .markun-topic-@{index} {
+      padding-left: 8px + (@value - 1) * 16px;
+    }
+  });
+
+  .markun-topic-active {
+    color: #0366d6 !important;
+    background-color: #f6f8fa !important;
+  }
+}

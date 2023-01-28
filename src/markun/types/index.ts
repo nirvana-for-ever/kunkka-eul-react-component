@@ -1,3 +1,5 @@
+import { CSSProperties } from "react";
+
 export type Theme =
 '3024-day' |
 '3024-night' |
@@ -112,8 +114,27 @@ export type Highlight =
 'zTouch';
 
 export interface MarkunProps {
-  defaultTheme: Theme;
-  defaultHighlight: Highlight;
+  style?: CSSProperties | undefined;
+  className?: string | undefined;
+  code: string;
+  defaultTheme?: Theme;
+  defaultHighlight?: Highlight;
   onImgUpload: (file: File) => Promise<string>;
   fullScreen?: () => void;
+  onCodeChange: (code: string) => void;
+}
+
+export interface MarkunRef {
+  getHtml: () => string;
+}
+
+export interface RendererProps {
+  className?: string | undefined;
+  code: string;
+  highlight: string;
+  onRenderFinished?: () => void;
+}
+
+export interface RendererRef {
+  root: HTMLDivElement | null;
 }

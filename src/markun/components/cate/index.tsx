@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import styles from './index.less';
 import { CateProps } from './types';
 import { useSelector } from 'react-redux';
@@ -6,44 +6,48 @@ import { CateHelper } from '../../utils/html';
 import { ReactComponent as CloseIcon } from '../../svg/close.svg';
 import { setCurSidebarVisible, store } from '../../store/markun';
 
-const helper = new CateHelper(document.getElementById('markun-viewer'));
-
-const CatePage: React.FC<CateProps> = () => {
+const CatePage: React.FC<CateProps> = ({ viewerRoot }) => {
   const root = useRef<HTMLDivElement>(null);
+
+  const helper = useMemo(() => {
+    if (viewerRoot) {
+      return new CateHelper(viewerRoot, 100);
+    }
+  }, [viewerRoot])
 
   const curSidebarVisible = useSelector((state: any) => {
     return state.curSidebarVisible;
   });
 
   useEffect(() => {
-    const observer = new MutationObserver(() => {
-      const newCate = helper.generateCate();
-      if (newCate && root.current) {
-        root.current.innerHTML = '';
-        root.current.appendChild(newCate);
-      } else if (root.current) {
-        root.current.innerHTML = '';
-      }
-    });
-    const el = document.getElementById('markun-viewer');
-    if (!el) return;
-    const options = {
-      'childList': true,
-      'subtree': true,
-      'characterData': true
-    } ;
-    observer.observe(el, options);
-  }, [])
+    if (helper && viewerRoot) {
+      const observer = new MutationObserver(() => {
+        const newCate = helper.generateCate();
+        if (newCate && root.current) {
+          root.current.innerHTML = '';
+          root.current.appendChild(newCate);
+        } else if (root.current) {
+          root.current.innerHTML = '';
+        }
+      });
+      const options = {
+        'childList': true,
+        'subtree': true,
+        'characterData': true
+      } ;
+      observer.observe(viewerRoot, options);
+    }
+  }, [viewerRoot, helper]);
 
   useEffect(() => {
-    if (curSidebarVisible === 'cate') {
+    if (helper && curSidebarVisible === 'cate') {
       const newCate = helper.generateCate();
       if (newCate && root.current) {
         root.current.innerHTML = '';
         root.current.appendChild(newCate);
       }
     }
-  }, [curSidebarVisible]);
+  }, [helper, curSidebarVisible]);
 
   return (
     <div className={styles['cate']} style={{ display: `${curSidebarVisible === 'cate' ? 'block' : 'none'}` }}>
