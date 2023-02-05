@@ -1,48 +1,51 @@
 import type { MenuProps } from 'antd';
 import { Dropdown, Tooltip } from 'antd';
-import React, { useEffect, useState } from 'react';
+import 'antd/lib/dropdown/style';
+import 'antd/lib/tooltip/style';
+import React, { useEffect, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { highlight, themes } from '../../constants/header';
 import { mermaidMap } from '../../constants/mermaid';
 import { setCurMainVisible, setCurSidebarVisible, store } from '../../store/markun';
-import { ReactComponent as BoldIcon } from '../../svg/bold.svg';
-import { ReactComponent as CateIcon } from '../../svg/cate.svg';
-import { ReactComponent as CodeBlockIcon } from '../../svg/code-block.svg';
-import { ReactComponent as CodeIcon } from '../../svg/code.svg';
-import { ReactComponent as DelIcon } from '../../svg/del.svg';
-import { ReactComponent as FormulaBlockIcon } from '../../svg/formula-block.svg';
-import { ReactComponent as FormulaInlineIcon } from '../../svg/formula-inline.svg';
-import { ReactComponent as FormulaIcon } from '../../svg/formula.svg';
-import { ReactComponent as FullscreenIcon } from '../../svg/fullscreen.svg';
-import { ReactComponent as HelpIcon } from '../../svg/help.svg';
-import { ReactComponent as HighLightIcon } from '../../svg/highlight.svg';
-import { ReactComponent as ImgShrinkIcon } from '../../svg/img-shrink.svg';
-import { ReactComponent as ImgIcon } from '../../svg/img.svg';
-import { ReactComponent as ItalicsIcon } from '../../svg/italics.svg';
-import { ReactComponent as LinkIcon } from '../../svg/link.svg';
-import { ReactComponent as MermaidIcon } from '../../svg/mermaid.svg';
-import { ReactComponent as OlIcon } from '../../svg/ol.svg';
-import { ReactComponent as OnlnEditorIcon } from '../../svg/only-editor.svg';
-import { ReactComponent as OnlnViewerIcon } from '../../svg/only-viewer.svg';
-import { ReactComponent as PositionLeftIcon } from '../../svg/position-left.svg';
-import { ReactComponent as PositionMidIcon } from '../../svg/position-mid.svg';
-import { ReactComponent as PositionRightIcon } from '../../svg/position-right.svg';
-import { ReactComponent as QuoteIcon } from '../../svg/quote.svg';
-import { ReactComponent as SourceIcon } from '../../svg/source.svg';
-import { ReactComponent as TableIcon } from '../../svg/table.svg';
-import { ReactComponent as ThemeIcon } from '../../svg/theme.svg';
-import { ReactComponent as TitleIcon } from '../../svg/title.svg';
-import { ReactComponent as Title1Icon } from '../../svg/title1.svg';
-import { ReactComponent as Title2Icon } from '../../svg/title2.svg';
-import { ReactComponent as Title3Icon } from '../../svg/title3.svg';
-import { ReactComponent as Title4Icon } from '../../svg/title4.svg';
-import { ReactComponent as Title5Icon } from '../../svg/title5.svg';
-import { ReactComponent as Title6Icon } from '../../svg/title6.svg';
-import { ReactComponent as UlIcon } from '../../svg/ul.svg';
-import styles from './index.less';
+import BoldIcon from '../../svg/bold';
+import CateIcon from '../../svg/cate';
+import CodeBlockIcon from '../../svg/code-block';
+import CodeIcon from '../../svg/code';
+import DelIcon from '../../svg/del';
+import FormulaBlockIcon from '../../svg/formula-block';
+import FormulaInlineIcon from '../../svg/formula-inline';
+import FormulaIcon from '../../svg/formula';
+import FullscreenIcon from '../../svg/fullscreen';
+import HelpIcon from '../../svg/help';
+import HighLightIcon from '../../svg/highlight';
+import ImgShrinkIcon from '../../svg/img-shrink';
+import ImgIcon from '../../svg/img';
+import ItalicsIcon from '../../svg/italics';
+import LinkIcon from '../../svg/link';
+import MermaidIcon from '../../svg/mermaid';
+import OlIcon from '../../svg/ol';
+import OnlnEditorIcon from '../../svg/only-editor';
+import OnlnViewerIcon from '../../svg/only-viewer';
+import PositionLeftIcon from '../../svg/position-left';
+import PositionMidIcon from '../../svg/position-mid';
+import PositionRightIcon from '../../svg/position-right';
+import QuoteIcon from '../../svg/quote';
+import SourceIcon from '../../svg/source';
+import TableIcon from '../../svg/table';
+import ThemeIcon from '../../svg/theme';
+import TitleIcon from '../../svg/title';
+import Title1Icon from '../../svg/title1';
+import Title2Icon from '../../svg/title2';
+import Title3Icon from '../../svg/title3';
+import Title4Icon from '../../svg/title4';
+import Title5Icon from '../../svg/title5';
+import Title6Icon from '../../svg/title6';
+import UlIcon from '../../svg/ul';
+import './index.css';
 import { MarkunHeaderProps } from './types';
 
 const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
+  const rootRef = useRef<HTMLDivElement>(null);
   const [themeItems, setThemeItems] = useState<MenuProps['items']>();
   const [highlightItems, setHighlightItems] = useState<MenuProps['items']>();
   const [titleItems, setTitleItems] = useState<MenuProps['items']>();
@@ -348,33 +351,44 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
     ]);
   }, []);
 
+  useEffect(() => {
+    const target = rootRef.current!;
+    if (props.curSize === 'short') {
+      if (!target.classList.contains('header-short')) target.classList.add('header-short');
+      target.classList.remove('header-normal');
+    } else {
+      if (!target.classList.contains('header-normal')) target.classList.add('header-normal');
+      target.classList.remove('header-short');
+    }
+  }, [props.curSize]);
+
   return (
-    <div className={styles['header']}>
-      <div className={styles['header-simple']}>
+    <div className={'header'} ref={rootRef}>
+      <div className={'header-simple'}>
         <div
-          className={`${styles['word-btn']} ${
-            curMainVisible !== 'viewer' ? styles['active'] : ''
+          className={`${'word-btn'} ${
+            curMainVisible !== 'viewer' ? 'active' : ''
           }`}
           onClick={() => store.dispatch(setCurMainVisible('editor'))}
         >
           编辑
         </div>
         <div
-          className={`${styles['word-btn']} ${
-            curMainVisible === 'viewer' ? styles['active'] : ''
+          className={`${'word-btn'} ${
+            curMainVisible === 'viewer' ? 'active' : ''
           }`}
           onClick={() => store.dispatch(setCurMainVisible('viewer'))}
         >
           预览
         </div>
       </div>
-      <div className={styles['header-whole']}>
+      <div className={'header-whole'}>
         <Dropdown
           menu={{ items: titleItems }}
           placement="bottomLeft"
           overlayClassName="markun-drop-down"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <TitleIcon />
           </div>
         </Dropdown>
@@ -383,7 +397,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="粗体"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('bold')}
           >
             <BoldIcon />
@@ -394,7 +408,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="斜体"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('italics')}
           >
             <ItalicsIcon />
@@ -405,7 +419,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="引用"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('quote')}
           >
             <QuoteIcon />
@@ -416,7 +430,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="链接"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('link')}
           >
             <LinkIcon />
@@ -427,7 +441,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="图片"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('imgUpload')}
           >
             <ImgIcon />
@@ -438,7 +452,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="代码"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('code')}
           >
             <CodeIcon />
@@ -449,7 +463,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="代码块"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('codeBlock')}
           >
             <CodeBlockIcon />
@@ -460,7 +474,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="无序列表"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('ul')}
           >
             <UlIcon />
@@ -471,7 +485,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="有序列表"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('ol')}
           >
             <OlIcon />
@@ -482,7 +496,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="删除线"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('del')}
           >
             <DelIcon />
@@ -493,7 +507,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="表格"
         >
           <div
-            className={styles['header-icon']}
+            className={'header-icon'}
             onClick={() => props.operateCode('table')}
           >
             <TableIcon />
@@ -504,7 +518,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="bottomLeft"
           overlayClassName="markun-drop-down"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <PositionMidIcon />
           </div>
         </Dropdown>
@@ -513,7 +527,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="bottomLeft"
           overlayClassName="markun-drop-down"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <ImgShrinkIcon />
           </div>
         </Dropdown>
@@ -522,7 +536,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="bottomLeft"
           overlayClassName="markun-drop-down"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <FormulaIcon />
           </div>
         </Dropdown>
@@ -531,7 +545,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="bottomLeft"
           overlayClassName="markun-drop-down markun-drop-down-long"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <MermaidIcon />
           </div>
         </Dropdown>
@@ -540,7 +554,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="bottomLeft"
           overlayClassName="markun-drop-down markun-drop-down-long"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <ThemeIcon />
           </div>
         </Dropdown>
@@ -549,17 +563,17 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="bottomLeft"
           overlayClassName="markun-drop-down markun-drop-down-long"
         >
-          <div className={styles['header-icon']}>
+          <div className={'header-icon'}>
             <HighLightIcon />
           </div>
         </Dropdown>
       </div>
-      <div className={styles['header-right']}>
+      <div className={'header-right'}>
         <Tooltip
           placement="top"
           title="目录"
         >
-          <div className={styles['header-icon']} onClick={() => store.dispatch(setCurSidebarVisible('cate'))}>
+          <div className={'header-icon'} onClick={() => store.dispatch(setCurSidebarVisible('cate'))}>
             <CateIcon />
           </div>
         </Tooltip>
@@ -567,7 +581,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="top"
           title="帮助"
         >
-          <div className={styles['header-icon']} onClick={() => store.dispatch(setCurSidebarVisible('helper'))}>
+          <div className={'header-icon'} onClick={() => store.dispatch(setCurSidebarVisible('helper'))}>
             <HelpIcon />
           </div>
         </Tooltip>
@@ -576,7 +590,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="仅编辑区"
         >
           <div
-            className={`${styles['header-icon']} ${styles['big-screen']}`}
+            className={'header-icon big-screen'}
             onClick={() => store.dispatch(setCurMainVisible('editor'))}
           >
             <OnlnEditorIcon />
@@ -587,7 +601,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           title="仅预览区"
         >
           <div
-            className={`${styles['header-icon']} ${styles['big-screen']}`}
+            className={'header-icon big-screen'}
             onClick={() => store.dispatch(setCurMainVisible('viewer'))}
           >
             <OnlnViewerIcon />
@@ -597,7 +611,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="top"
           title="全屏"
         >
-          <div className={styles['header-icon']} onClick={() => props.fullScreen()}>
+          <div className={'header-icon'} onClick={() => props.fullScreen()}>
             <FullscreenIcon />
           </div>
         </Tooltip>
@@ -605,7 +619,7 @@ const MarkunHeader: React.FC<MarkunHeaderProps> = props => {
           placement="top"
           title="源代码"
         >
-          <div className={styles['header-icon']} onClick={() => window.open('https://github.com/nirvana-for-ever/kunkka-eul-react-component')}>
+          <div className={'header-icon'} onClick={() => window.open('https://github.com/nirvana-for-ever/kunkka-eul-react-component')}>
             <SourceIcon />
           </div>
         </Tooltip>

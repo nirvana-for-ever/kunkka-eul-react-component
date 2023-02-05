@@ -1,0 +1,14 @@
+.markun {
+  height: 100%;
+  width: 100%;
+  font-size: 16px;
+}
+
+.markun .main {
+  display: flex;
+  height: calc(100% - 66px);
+}
+
+.markun *, *::before, *::after {
+  box-sizing: content-box;
+}

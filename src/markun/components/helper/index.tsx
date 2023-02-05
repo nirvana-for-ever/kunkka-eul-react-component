@@ -1,24 +1,24 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import styles from './index.less';
-import { ReactComponent as LinkBlueIcon } from '../../svg/link-blue.svg';
-import { ReactComponent as CloseIcon } from '../../svg/close.svg';
-import { ReactComponent as BoldIcon } from '../../svg/bold.svg';
-import { ReactComponent as CodeBlockIcon } from '../../svg/code-block.svg';
-import { ReactComponent as CodeIcon } from '../../svg/code.svg';
-import { ReactComponent as DelIcon } from '../../svg/del.svg';
-import { ReactComponent as FormulaBlockIcon } from '../../svg/formula-block.svg';
-import { ReactComponent as FormulaInlineIcon } from '../../svg/formula-inline.svg';
-import { ReactComponent as ImgIcon } from '../../svg/img.svg';
-import { ReactComponent as ItalicsIcon } from '../../svg/italics.svg';
-import { ReactComponent as LinkIcon } from '../../svg/link.svg';
-import { ReactComponent as MermaidIcon } from '../../svg/mermaid.svg';
-import { ReactComponent as OlIcon } from '../../svg/ol.svg';
-import { ReactComponent as QuoteIcon } from '../../svg/quote.svg';
-import { ReactComponent as Title1Icon } from '../../svg/title1.svg';
-import { ReactComponent as Title2Icon } from '../../svg/title2.svg';
-import { ReactComponent as Title3Icon } from '../../svg/title3.svg';
-import { ReactComponent as UlIcon } from '../../svg/ul.svg';
+import './index.css';
+import LinkBlueIcon from '../../svg/link-blue';
+import CloseIcon from '../../svg/close';
+import BoldIcon from '../../svg/bold';
+import CodeBlockIcon from '../../svg/code-block';
+import CodeIcon from '../../svg/code';
+import DelIcon from '../../svg/del';
+import FormulaBlockIcon from '../../svg/formula-block';
+import FormulaInlineIcon from '../../svg/formula-inline';
+import ImgIcon from '../../svg/img';
+import ItalicsIcon from '../../svg/italics';
+import LinkIcon from '../../svg/link';
+import MermaidIcon from '../../svg/mermaid';
+import OlIcon from '../../svg/ol';
+import QuoteIcon from '../../svg/quote';
+import Title1Icon from '../../svg/title1';
+import Title2Icon from '../../svg/title2';
+import Title3Icon from '../../svg/title3';
+import UlIcon from '../../svg/ul';
 import { setCurSidebarVisible, store } from '../../store/markun';
 import { isMac } from '../../utils'
 
@@ -148,16 +148,16 @@ const quicklyKey = [
   }
 ]
 
-export default function HelperPage() {
+const HelperPage: React.FC = () => {
   const curSidebarVisible = useSelector((state: any) => {
     return state.curSidebarVisible;
   });
 
   return (
-    <div className={styles['helper']} style={{ display: `${curSidebarVisible === 'helper' ? 'block' : 'none'}` }}>
-      <div className={styles['close-tag']} onClick={() => store.dispatch(setCurSidebarVisible('none'))}><CloseIcon /></div>
+    <div className={'helper'} style={{ display: `${curSidebarVisible === 'helper' ? 'block' : 'none'}` }}>
+      <div className={'close-tag'} onClick={() => store.dispatch(setCurSidebarVisible('none'))}><CloseIcon /></div>
       <h2>帮助</h2>
-      <div className={styles['link']} onClick={() => window.open('https://www.markdownguide.org/basic-syntax')}>
+      <div className={'link'} onClick={() => window.open('https://www.markdownguide.org/basic-syntax')}>
         <LinkBlueIcon />
         如何编写 Markdown
       </div>
@@ -165,10 +165,10 @@ export default function HelperPage() {
       {
         markdownGrammers.map(item => {
           return (
-            <div className={styles['md-gram-item']} key={item.title}>
-              <div className={styles['icon']}>{item.icon}</div>
-              <div className={styles['title']}>{item.title}</div>
-              <div className={styles['desc']}>{item.desc}</div>
+            <div className={'md-gram-item'} key={item.title}>
+              <div className={'icon'}>{item.icon}</div>
+              <div className={'title'}>{item.title}</div>
+              <div className={'desc'}>{item.desc}</div>
             </div>
           );
         })
@@ -177,10 +177,10 @@ export default function HelperPage() {
       {
         quicklyKey.map(item => {
           return (
-            <div className={styles['md-gram-item']} key={item.title}>
-              <div className={styles['icon']}>{item.icon}</div>
-              <div className={styles['title']}>{item.title}</div>
-              <div className={styles['desc']}>{item.desc}</div>
+            <div className={'md-gram-item'} key={item.title}>
+              <div className={'icon'}>{item.icon}</div>
+              <div className={'title'}>{item.title}</div>
+              <div className={'desc'}>{item.desc}</div>
             </div>
           );
         })
@@ -189,3 +189,4 @@ export default function HelperPage() {
   )
 }
 
+export default HelperPage;

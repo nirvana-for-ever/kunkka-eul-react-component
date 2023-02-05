@@ -122,6 +122,7 @@ export interface MarkunProps {
   onImgUpload: (file: File) => Promise<string>;
   fullScreen?: () => void;
   onCodeChange: (code: string) => void;
+  onHighlightChange?: (highlight: Highlight) => void;
 }
 
 export interface MarkunRef {

@@ -1,8 +1,9 @@
 import 'katex/dist/katex.min.css';
-import mermaid from 'mermaid';
+// @ts-ignore
+import mermaid from 'mermaid/dist/mermaid.esm.min.mjs';
 import React, { useEffect, useImperativeHandle, useRef } from 'react';
 import ReactMarkdown from 'react-markdown';
-import styles from './renderer.less';
+import './renderer.css';
 import { RendererProps, RendererRef } from './types';
 // @ts-ignore
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -23,15 +24,22 @@ const Renderer = React.forwardRef<RendererRef, RendererProps>((props, ref) => {
 
   useEffect(() => {
     if (props.onRenderFinished && rootRef.current) {
-      const observer = new MutationObserver(() => {
-        props.onRenderFinished!();
-      });
-      const options = {
-        childList: true,
-        subtree: true,
-        characterData: true
-      };
-      observer.observe(rootRef.current, options);
+      if (rootRef.current.innerHTML === '') {
+        const observer = new MutationObserver(() => {
+          props.onRenderFinished!();
+        });
+        const options = {
+          childList: true,
+          subtree: true,
+          characterData: true
+        };
+        observer.observe(rootRef.current, options);
+        return () => {
+          observer.disconnect();
+        };
+      } else {
+        props.onRenderFinished();
+      }
     }
   }, [rootRef.current, props.onRenderFinished]);
 
@@ -44,7 +52,7 @@ const Renderer = React.forwardRef<RendererRef, RendererProps>((props, ref) => {
   return (
     <div ref={rootRef}>
       <ReactMarkdown
-        className={styles['renderer']}
+        className={`renderer ${props.className}`}
         children={props.code}
         remarkPlugins={remarkPlugins}
         rehypePlugins={rehypePlugins}
@@ -74,7 +82,7 @@ const Renderer = React.forwardRef<RendererRef, RendererProps>((props, ref) => {
               />
             ) : (
               <code
-                className={styles['inline-code']}
+                className={'inline-code'}
                 {...args}
               >
                 {children}

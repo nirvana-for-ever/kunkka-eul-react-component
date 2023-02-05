@@ -1,19 +1,19 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import styles from './index.less';
-import { CateProps } from './types';
 import { useSelector } from 'react-redux';
-import { CateHelper } from '../../utils/html';
-import { ReactComponent as CloseIcon } from '../../svg/close.svg';
 import { setCurSidebarVisible, store } from '../../store/markun';
+import CloseIcon from '../../svg/close';
+import { CateHelper } from '../../utils/html';
+import './index.css';
+import { CateProps } from './types';
 
 const CatePage: React.FC<CateProps> = ({ viewerRoot }) => {
   const root = useRef<HTMLDivElement>(null);
 
   const helper = useMemo(() => {
     if (viewerRoot) {
-      return new CateHelper(viewerRoot, 100);
+      return new CateHelper(viewerRoot, 30);
     }
-  }, [viewerRoot])
+  }, [viewerRoot]);
 
   const curSidebarVisible = useSelector((state: any) => {
     return state.curSidebarVisible;
@@ -31,11 +31,14 @@ const CatePage: React.FC<CateProps> = ({ viewerRoot }) => {
         }
       });
       const options = {
-        'childList': true,
-        'subtree': true,
-        'characterData': true
-      } ;
+        childList: true,
+        subtree: true,
+        characterData: true
+      };
       observer.observe(viewerRoot, options);
+      return () => {
+        observer.disconnect();
+      };
     }
   }, [viewerRoot, helper]);
 
@@ -50,11 +53,23 @@ const CatePage: React.FC<CateProps> = ({ viewerRoot }) => {
   }, [helper, curSidebarVisible]);
 
   return (
-    <div className={styles['cate']} style={{ display: `${curSidebarVisible === 'cate' ? 'block' : 'none'}` }}>
-      <div className={styles['close-tag']} onClick={() => store.dispatch(setCurSidebarVisible('none'))}><CloseIcon /></div>
-      <div ref={root} className={styles['content']}></div>
+    <div
+      className={'cate'}
+      style={{ display: `${curSidebarVisible === 'cate' ? 'block' : 'none'}` }}
+    >
+      <div
+        className={'close-tag'}
+        onClick={() => store.dispatch(setCurSidebarVisible('none'))}
+      >
+        <CloseIcon />
+      </div>
+      <div style={{ fontWeight: '600' }}>目录</div>
+      <div
+        ref={root}
+        className={'content'}
+      ></div>
     </div>
-  )
+  );
 };
 
 export default CatePage;

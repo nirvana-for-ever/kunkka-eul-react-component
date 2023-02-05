@@ -1,6 +1,11 @@
 # Markun
 可供 `react` 使用的 `md` 编辑器，包括基础 `md` 编辑器功能，还有目录、`mermaid` 等功能
 
+需要使用 antd
+```shell
+npm i antd@4
+```
+
 ## 简单应用
 编辑和保存功能，保存功能通过 `ref` 来实现，`getHtml` 方法可以获取 `md` 渲染后的 `html` 代码
 `md` 源码则保存在 `code` 中，可以根据实际需求保存内容
@@ -9,7 +14,8 @@
 ## 生成目录
 保存了 `html` 之后，不使用 `Markun` 的时候如何生成目录?
 通过提供的 `CateHelper` 帮助类来生成目标 `dom` 对应的目录的 `html` 代码
-通过 `CateHelper` 的 `generateCate` 方法可以生成目录 `dom` 元素，通过 `appendChild` 添加到自定义的容器当中
+通过 `CateHelper` 的 `generateCate` 方法可以生成目录 `dom` 元素，通过 `appendChild` 添加到自定义的容器当中  
+注意，生成的
 <code src="./demo/CateDemo.tsx"></code>
 
 ## 不保存 `html` , 使用 `md` 进行渲染
@@ -26,6 +32,7 @@
 | `defaultHighlight` | 预览区代码高亮主题 | `oneDark` | `string` |
 | `onImgUpload` | 图片上传回调 | `undefined` | `(file: File) => Promise<string>` 方法返回值需要返回图片地址 |
 | `fullScreen` | 全屏事件 | 原生 `js` 全屏 | `() => void` |
+| `onHighlightChange` | 高亮模式改变 | `undefined` | `(highlight: string) => void` |
 
 ### Ref
 | 配置项 | 说明 | 类型 |

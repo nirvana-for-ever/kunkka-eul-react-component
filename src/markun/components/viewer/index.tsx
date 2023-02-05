@@ -1,9 +1,10 @@
 import 'katex/dist/katex.min.css';
-import mermaid from 'mermaid';
-import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
+// @ts-ignore
+import mermaid from 'mermaid/dist/mermaid.esm.min.mjs';
+import React, { useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { useSelector } from 'react-redux';
-import styles from './index.less';
+import './index.css';
 import type { ViewerProps, ViewerRef } from './types';
 // @ts-ignore
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
@@ -76,12 +77,8 @@ const Viewer = React.forwardRef<ViewerRef, ViewerProps>((props, ref) => {
     return state.curSidebarVisible;
   });
 
-  const mediaQueryList = window.matchMedia('(max-width:1024px)');
-  // 0 只展示自己
-  // 1 隐藏自己
-  // 2 各自展示
-  const [screenState, setScreenState] = useState(
-    mediaQueryList.matches
+  const screenState = useMemo(() => {
+    return props.curSize === 'short'
       ? curMainVisible === 'viewer'
         ? 0
         : 1
@@ -90,46 +87,19 @@ const Viewer = React.forwardRef<ViewerRef, ViewerProps>((props, ref) => {
       : curMainVisible === 'both'
       ? 2
       : 1
-  );
-  mediaQueryList.addEventListener('change', (e: any) => {
-    setScreenState(
-      e.matches
-        ? curMainVisible === 'viewer'
-          ? 0
-          : 1
-        : curMainVisible === 'viewer'
-        ? 0
-        : curMainVisible === 'both'
-        ? 2
-        : 1
-    );
-  });
-
-  useEffect(() => {
-    setScreenState(
-      mediaQueryList.matches
-        ? curMainVisible === 'viewer'
-          ? 0
-          : 1
-        : curMainVisible === 'viewer'
-        ? 0
-        : curMainVisible === 'both'
-        ? 2
-        : 1
-    );
-  }, [curMainVisible]);
+  }, [props.curSize, curMainVisible]);
 
   return (
     <div
       id='markun-viewer'
       ref={divRef}
-      className={styles['viewer']}
+      className={'viewer'}
       style={{
         display: screenState === 1 ? 'none' : 'block',
         width:
           screenState === 0
             ? `${curSidebarVisible === 'none' ? '100%' : 'calc(100% - 180px)'}`
-            : `${curSidebarVisible === 'none' ? '50%' : 'calc(50% - 180px)'}`
+            : `${curSidebarVisible === 'none' ? 'calc(50% - 41px)' : 'calc(50% - 181px)'}`
       }}
       onMouseEnter={() => {
         if (!scrollStore.getState().isScrollSync) return;
@@ -167,7 +137,7 @@ const Viewer = React.forwardRef<ViewerRef, ViewerProps>((props, ref) => {
               />
             ) : (
               <code
-                className={styles['inline-code']}
+                className={'inline-code'}
                 {...args}
               >
                 {children}

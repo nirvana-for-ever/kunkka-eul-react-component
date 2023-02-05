@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './index.less';
+import './index.css';
 import { store as scrollStore, setIsScrollSync as storeIsScrollSync } from '../../store/scroll';
 import { FooterProps } from './types';
 import { useSelector } from 'react-redux';
@@ -23,17 +23,17 @@ const Footer: React.FC<FooterProps> = (props) => {
   })
 
   return (
-    <div className={styles['footer']}>
-      <div className={styles['left']}>
+    <div className={'footer'}>
+      <div className={'left'}>
         <span>字数: <strong>{ wordCount }</strong></span>
         <span>行数: <strong>{ lineCount }</strong></span>
       </div>
-      <div className={styles['right']}>
+      <div className={'right'}>
         <div>
           <input checked={isScrollSync} type='checkbox' onClick={checkScrollSync} onChange={() => {}} />
           <span onClick={checkScrollSync}>同步滚动</span>
         </div>
-        <div className={styles['back-top']} onClick={() => props.scrollToTop(isScrollSync)}>回到顶部</div>
+        <div className={'back-top'} onClick={() => props.scrollToTop(isScrollSync)}>回到顶部</div>
       </div>
     </div>
   );

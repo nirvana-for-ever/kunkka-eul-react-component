@@ -6,7 +6,7 @@ import React, {
   useState
 } from 'react';
 import Code4React from '../../../code4react/code4react';
-import styles from './index.less';
+import './index.css';
 import { EditorProps, EditorRef } from './types';
 // require styles
 import 'codemirror/lib/codemirror.css';
@@ -40,7 +40,7 @@ const basicOptions = {
 };
 
 const Editor = React.forwardRef<EditorRef, EditorProps>(
-  ({ code, theme, onCodeChange, onImgUpload, onScroll }, ref) => {
+  ({ code, theme, curSize, onCodeChange, onImgUpload, onScroll }, ref) => {
     const [keyEvents, setKeyEvents] = useState<any>();
 
     const code4ReactRef = useRef<Code4ReactRef>(null);
@@ -157,12 +157,8 @@ const Editor = React.forwardRef<EditorRef, EditorProps>(
       return state.curSidebarVisible;
     });
 
-    const mediaQueryList = window.matchMedia('(max-width:1024px)');
-    // 0 只展示自己
-    // 1 隐藏自己
-    // 2 各自展示
-    const [screenState, setScreenState] = useState(
-      mediaQueryList.matches
+    const screenState = useMemo(() => {
+      return curSize === 'short'
         ? curMainVisible !== 'viewer'
           ? 0
           : 1
@@ -171,38 +167,11 @@ const Editor = React.forwardRef<EditorRef, EditorProps>(
         : curMainVisible === 'both'
         ? 2
         : 1
-    );
-    mediaQueryList.addEventListener('change', (e: any) => {
-      setScreenState(
-        e.matches
-          ? curMainVisible !== 'viewer'
-            ? 0
-            : 1
-          : curMainVisible === 'editor'
-          ? 0
-          : curMainVisible === 'both'
-          ? 2
-          : 1
-      );
-    });
-
-    useEffect(() => {
-      setScreenState(
-        mediaQueryList.matches
-          ? curMainVisible !== 'viewer'
-            ? 0
-            : 1
-          : curMainVisible === 'editor'
-          ? 0
-          : curMainVisible === 'both'
-          ? 2
-          : 1
-      );
-    }, [curMainVisible]);
+    }, [curSize, curMainVisible]);
 
     return (
       <div
-        className={styles['editor']}
+        className={'editor'}
         style={{
           display: screenState === 1 ? 'none' : 'block',
           width:

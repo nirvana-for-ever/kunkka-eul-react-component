@@ -34,20 +34,23 @@ export class CateHelper {
         li.innerHTML = cur.innerHTML;
         li.classList.add(`markun-topic-${level}`);
         li.onclick = () => {
-          const rootP = this.getScrollableParent(root);
-          if (!this.isScrollable(root) && rootP) {
-            rootP.scrollTop = this.getTop(rootP, cur) - this.toTop;
-          } else if (rootP) {
-            rootP.scrollTop = this.getTop(rootP, root) - this.toTop;
-            root.scrollTop = this.getTop(root, cur);
+          if (this.isScrollable(root)) {
+            root.scrollTop =
+              this.getTop(root, cur) + root.scrollTop - this.toTop;
           } else {
-            root.scrollTop = this.getTop(root, cur) - this.toTop;
+            const rootP = this.getScrollableParent(root);
+            if (rootP) {
+              rootP.scrollTop =
+                this.getTop(rootP, cur) - this.toTop;
+            } else {
+              cur.scrollIntoView();
+            }
           }
           children.forEach(item => {
             item.classList.remove('markun-topic-active');
-          })
+          });
           li.classList.add('markun-topic-active');
-        }
+        };
         this.children.push(li);
         this.cateDom!.appendChild(li);
       }
@@ -67,7 +70,7 @@ export class CateHelper {
     if (!dom) return false;
     if (dom.scrollTop !== 0) return true;
     dom.scrollTop = 1;
-    if (dom.scrollTop === 1) {
+    if (dom.scrollTop !== 0) {
       dom.scrollTop = 0;
       return true;
     }
@@ -76,6 +79,8 @@ export class CateHelper {
 
   // 获取子元素到祖宗级元素(父级或更高级)顶部的距离
   private getTop(ancestors: HTMLElement, son: HTMLElement) {
-    return son.getBoundingClientRect().top - ancestors.getBoundingClientRect().top;
+    return (
+      son.getBoundingClientRect().top - ancestors.getBoundingClientRect().top
+    );
   }
 }

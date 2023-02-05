@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Markun, MarkunRef } from '@kunkka-eul/react-component';
 import { Button } from 'antd';
+import 'antd/lib/button/style';
 
 const Demo: React.FC = () => {
   const [code, setCode] = useState('');

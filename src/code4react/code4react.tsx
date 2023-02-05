@@ -2,7 +2,7 @@ import { useDeepCompareEffect } from 'ahooks';
 // @ts-ignore
 import _CodeMirror from 'codemirror';
 import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
-import './global.less';
+import './global.css';
 import { Code4ReactProps, Code4ReactRef } from './types';
 
 // @ts-ignore

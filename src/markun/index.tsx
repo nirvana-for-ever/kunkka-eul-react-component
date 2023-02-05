@@ -1,4 +1,4 @@
-import React, { useImperativeHandle, useRef, useState } from 'react';
+import React, { useEffect, useImperativeHandle, useRef, useState } from 'react';
 import { Provider } from 'react-redux';
 import Editor from './components/editor';
 import { EditorRef } from './components/editor/types';
@@ -8,8 +8,8 @@ import Helper from './components/helper';
 import Cate from './components/cate';
 import Viewer from './components/viewer';
 import { ViewerRef } from './components/viewer/types';
-import './global.less';
-import styles from './index.less';
+import './global.css';
+import './index.css';
 import { store as markunStore } from './store/markun';
 import { setScrollingOwner, store as scrollStore } from './store/scroll';
 import { MarkunProps, MarkunRef } from './types';
@@ -20,7 +20,8 @@ const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
   const [highlight, setHighlight] = useState(
     props.defaultHighlight || 'oneDark'
   );
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(props.code || '');
+  const [curSize, setCurSize] = useState<'normal' | 'short'>('normal');
 
   const rootRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<EditorRef>(null);
@@ -34,21 +35,41 @@ const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
     };
   }, [viewerRef.current]);
 
+  useEffect(() => {
+    const resizeObserver = new ResizeObserver((e) => {
+      const target = e[0].target;
+      setCurSize(target.clientWidth < 700 ? 'short' : 'normal');
+    });
+    resizeObserver.observe(rootRef.current!);
+
+    return () => {
+      resizeObserver.disconnect();
+    }
+  }, []);
+
+  useEffect(() => {
+    if (props.code !== code) {
+      setCode(props.code);
+    }
+  }, [props.code])
+
   return (
     <Provider store={markunStore}>
       <div
-        className={`${styles['markun']} ${props.className}`}
+        className={`markun ${props.className || ''}`}
         style={props.style}
         ref={rootRef}
       >
         <Header
           theme={theme}
           highlight={highlight}
+          curSize={curSize}
           themeChange={theme => {
             setTheme(theme);
           }}
           highlightChange={highlight => {
             setHighlight(highlight);
+            props.onHighlightChange && props.onHighlightChange(highlight);
           }}
           operateCode={action => {
             editorRef?.current?.operateCode(action);
@@ -61,10 +82,11 @@ const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
             }
           }}
         />
-        <div className={styles['main']}>
+        <div className={'main'}>
           <Editor
             ref={editorRef}
-            code={props.code}
+            curSize={curSize}
+            code={code}
             theme={theme}
             onCodeChange={newCode => {
               setCode(newCode);
@@ -117,8 +139,9 @@ const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
                   }
                 }
                 // 编辑区滚动到底部预览区也要滚到底部
+                // 由于可能存在小数点误差，所以加1补偿
                 if (
-                  editorScrollInfo.top >=
+                  editorScrollInfo.top + 1 >=
                   editorScrollInfo.height - editorScrollInfo.clientHeight
                 ) {
                   viewerRoot.scrollTop =
@@ -144,6 +167,7 @@ const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
           />
           <Viewer
             ref={viewerRef}
+            curSize={curSize}
             highlight={highlight}
             code={code}
             isListenTreeChange={true}
@@ -192,8 +216,10 @@ const Markun = React.forwardRef<MarkunRef, MarkunProps>((props, ref) => {
                   }
                 }
                 let editorScrollInfo = cmInstance.getScrollInfo();
+                // 预览区滚动到底部编辑区也要滚到底部
+                // 由于可能存在小数点误差，所以加1补偿
                 if (
-                  viewerScrollTop >=
+                  viewerScrollTop + 1 >=
                   viewerRoot.scrollHeight - viewerRoot.clientHeight
                 ) {
                   cmInstance.scrollTo(

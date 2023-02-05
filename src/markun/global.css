@@ -1,0 +1,86 @@
+.markun-drop-down {
+  padding: 4px 0;
+  border: 1px solid rgba(0, 0, 0, .3);
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.markun-drop-down *, *::before, *::after {
+  box-sizing: content-box;
+}
+
+.markun-drop-down .markun-drop-down-item {
+  display: flex;
+  align-items: center;
+}
+
+.markun-drop-down .markun-drop-down-item .drop-down-icon {
+  display: flex;
+  font-size: 16px;
+}
+
+.markun-drop-down .markun-drop-down-item .drop-down-icon svg {
+  padding: 4px;
+}
+
+.markun-drop-down .markun-drop-down-item-active {
+  color: #1677ff;
+}
+
+.markun-drop-down .markun-drop-down-title {
+  font-weight: 700;
+}
+
+.markun-drop-down-long {
+  background-color: #fff;
+}
+.markun-drop-down .ant-dropdown-menu-root {
+  box-shadow: none;
+}
+.markun-drop-down-long .ant-dropdown-menu-root {
+  max-height: 200px;
+  overflow: auto;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #c9cdd4;
+  outline: none;
+  border-radius: 2px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+:not(pre) > code[class*="language-"] {
+  padding: 0;
+}
+
+.markun-topic-1 {
+  padding-left: 8px;
+}
+.markun-topic-2 {
+  padding-left: 24px;
+}
+.markun-topic-3 {
+  padding-left: 40px;
+}
+.markun-topic-4 {
+  padding-left: 56px;
+}
+.markun-topic-5 {
+  padding-left: 72px;
+}
+.markun-topic-6 {
+  padding-left: 88px;
+}
+
+.markun-topic-active {
+  color: #0366d6 !important;
+  background-color: #f6f8fa;
+}

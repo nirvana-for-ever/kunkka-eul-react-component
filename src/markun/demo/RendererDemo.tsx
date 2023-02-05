@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Renderer, CateHelper } from '@kunkka-eul/react-component';
-import { RendererRef } from '@kunkka-eul/react-component';
+import { Renderer, CateHelper, RendererRef } from '@kunkka-eul/react-component';
 import './catedemo.less'; // 样式示例，可自定义样式
 
 const mdContent = '# title 1\n## title 1.1\n\n```js\nconst name = \'zs\'\n```\n # title 2\n content';
@@ -22,7 +21,10 @@ const Demo: React.FC = () => {
     if (isRenderFinished && cateRef.current && helper) {
       cateRef.current.innerHTML = '';
       // 使用 appendChild 的方式而不是设置 innerHTML，避免点击事件用不了
-      cateRef.current.appendChild(helper.generateCate());
+      const cate = helper.generateCate();
+      if (cate) {
+        cateRef.current.appendChild(cate);
+      }
     }
   }, [cateRef.current, isRenderFinished, helper]);
 

@@ -1,0 +1,56 @@
+.helper {
+  position: relative;
+  height: calc(100% - 40px);
+  width: 240px;
+  padding: 20px;
+  background-color: #fff;
+  border-left: 1px solid #e1e4e8;
+  overflow: auto;
+}
+
+.helper .close-tag {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.helper h2 {
+  margin: 32px 0 16px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.helper .link {
+  display: flex;
+  align-items: center;
+  color: #1C78F0;
+  cursor: pointer;
+  font-size: 13px;
+  text-decoration: underline;
+}
+
+.helper .md-gram-item {
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-family: SFMono-Regular,Consolas,Liberation Mono,Menlo,monospace;
+  color: #959da5;
+}
+
+.helper .md-gram-item div {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.helper .md-gram-item .icon {
+  font-size: 16px;
+}
+
+.helper .md-gram-item .title {
+  display: inline-block;
+  margin-left: 8px;
+}
+
+.helper .md-gram-item .desc {
+  float: right;
+}
